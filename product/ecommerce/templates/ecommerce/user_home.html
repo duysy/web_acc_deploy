@@ -1,0 +1,208 @@
+{%extends 'ecommerce/user_template.html'%} {%block content%}
+<style>
+  .custom-scrollbar {
+    position: relative;
+    overflow: auto;
+  }
+
+  .table-wrapper-scroll-y {
+    display: block;
+  }
+</style>
+<title>Trang chủ</title>
+{%if notification%}
+<script>
+  setTimeout(() => {
+    document.getElementById("warring").style.display = "none";
+  }, 5000);
+</script>
+<div
+  class="alert alert-danger"
+  role="alert"
+  id="warring"
+  style="display: block; font-size: 1.5rem"
+>
+  Cảnh báo : {{notification}}
+</div>
+{%endif%}
+<section>
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-5">DANH SÁCH TÀI KHOẢN</h1>
+      <p class="lead">
+        {%if inforConfig.home_list_account_info%}
+        {{inforConfig.home_list_account_info}} {%else%} Home list account info
+        {%endif%}
+      </p>
+      <p class="h4 text-danger">
+        {%if inforConfig.home_note%} {{inforConfig.home_note}}
+        {%else%} Home note {%endif%}
+      </p>
+    </div>
+  </div>
+</section>
+<section>
+  {% if categorys %} {% for category in categorys %}
+  <div class="card" style="width: 100%; margin-bottom: 50px">
+    <div class="h3 card-header">{{category.name|upper}}</div>
+    {% if category.kindCategorys %}
+    <div
+      class="table-wrapper-scroll-y custom-scrollbar"
+      style="width: 100%; padding: 10px 10px"
+    >
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col" style="width: 40%">Tên sản phẩm</th>
+            <th scope="col">Quốc gia</th>
+            <th scope="col">Hiện có</th>
+            <th scope="col" style="width: 15%">Đơn giá</th>
+            <th scope="col" style="min-width: 120px; width: 120px">Số lượng</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for kindCategory in category.kindCategorys %}
+          <tr>
+            <th scope="row">{{kindCategory.id}}</th>
+            <td>{{kindCategory.name}}</td>
+            <td>{{kindCategory.country}}</td>
+            <td>{{kindCategory.countItemKindCategory}}</td>
+            <td>{{kindCategory.price}} VND</td>
+            <form
+              action="/buy_item"
+              method="post"
+              onsubmit="return confirm(`Đồng ý mua với giá ${ +document.getElementById('buyNumber_{{kindCategory.id}}').value*{{kindCategory.price}}} VND`);"
+            >
+              {% csrf_token %}
+              <input
+                type="number"
+                name="id"
+                value="{{kindCategory.id}}"
+                hidden
+              />
+              <td>
+                {% if kindCategory.private %}
+                <input
+                  type="text"
+                  name="amount"
+                  class="form-control"
+                  disabled
+                  value="disabled"
+                  id="buyNumber"
+                />
+                {%else%}
+                <input
+                  type="number"
+                  name="amount"
+                  class="form-control"
+                  id="buyNumber_{{kindCategory.id}}"
+                />
+                {% endif %}
+              </td>
+              <td>
+                <input class="btn btn-primary" type="submit" value="Mua" />
+              </td>
+            </form>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div style="width: 100%; padding: 10px 10px">
+      <h6>No Kind Category are available.</h6>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %} {% else %}
+  <div class="card" style="width: 100%; margin-bottom: 50px">
+    <div class="h3 card-header">Không có data.</div>
+  </div>
+  {% endif %}
+</section>
+<section>
+  <div class="card" style="width: 100%; margin-bottom: 50px">
+    <div class="h3 card-header">LỊCH SỬ ORDER</div>
+    {%if historyItemBuy%}
+    <div
+      class="table-wrapper-scroll-y custom-scrollbar"
+      style="width: 100%; padding: 10px 10px"
+    >
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Người mua</th>
+            <th scope="col">Logs</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Thời gian</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%for item in historyItemBuy%}
+          <tr>
+            <th scope="row">{{item.username}}</th>
+            <td>{{item.name}}</td>
+            <td>{{item.cost}} VND</td>
+            <td>{{item.pub_date}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
+
+    {%else%}
+    <div class="card" style="width: 100%; margin-bottom: 50px">
+      <div class="h3 card-header">Không có data.</div>
+    </div>
+    {%endif%}
+  </div>
+</section>
+<section>
+  <div class="card" style="width: 100%; margin-bottom: 50px">
+    <div class="h3 card-header">LỊCH SỬ NẠP TIỀN</div>
+    {%if historyDeposit%}
+    <div
+      class="table-wrapper-scroll-y custom-scrollbar"
+      style="width: 100%; padding: 10px 10px"
+    >
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Tài khoản</th>
+            <th scope="col">Ngân hàng</th>
+            <th scope="col">Số tiền</th>
+            <th scope="col">Thời gian</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%for item in historyDeposit%}
+          <tr>
+            <th scope="row">{{item.username}}</th>
+            <td>{{item.bank}}</td>
+            <td>{{item.value}} VND</td>
+            <td>{{item.pub_date}}</td>
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
+
+    {%else%}
+    <div class="card" style="width: 100%; margin-bottom: 50px">
+      <div class="h3 card-header">Không có data.</div>
+    </div>
+    {%endif%}
+  </div>
+</section>
+<section>
+  <div class="jumbotron">
+    <h1 class="display-5">CHÍNH SÁCH CỦA HỆ THỐNG</h1>
+    <p class="lead">
+      {%if inforConfig.home_policy%} {{inforConfig.home_policy|safe}}
+      {%else%} Home policy {%endif%}
+    </p>
+  </div>
+</section>
+{%endblock%}

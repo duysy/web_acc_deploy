@@ -1,0 +1,40 @@
+{%extends 'ecommerce/user_template.html'%} {%block content%}
+<title>Liên hệ</title>
+<section>
+  <div class="card" style="width: 100%; margin-bottom: 50px">
+    <div class="h3 card-header">THÔNG TIN LIÊN HỆ</div>
+    <hr />
+    {%if data%}
+    <div class="row" style="padding: 10px">
+      {%for item in data%}
+      <div
+        class="col"
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 60vh;
+        "
+      >
+        <div class="card" style="width: 18rem">
+          <img
+            class="card-img-top"
+            src="{{item.image}}"
+            alt="Card image cap"
+            style="height: 150px"
+          />
+          <div class="card-body">
+            <a href="{{item.link}}"> Go To contact </a>
+          </div>
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+    {%else%}
+    <div class="card" style="width: 100%; margin-bottom: 50px">
+      <div class="h3 card-header">Không có data.</div>
+    </div>
+    {%endif%}
+  </div>
+</section>
+{%endblock%}

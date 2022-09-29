@@ -1,0 +1,92 @@
+{%extends 'ecommerce/user_template.html'%} {%block content%}
+<title>Lịch sử mua account</title>
+<style>
+    .custom-scrollbar {
+        position: relative;
+        overflow: auto;
+    }
+    
+    .table-wrapper-scroll-y {
+        display: block;
+    }
+</style>
+<section>
+    <div class="card" style="width: 100%; margin-bottom: 10px">
+        <div class="h3 card-header">LỊCH SỬ MUA ACCOUNT</div>
+        {%if page_obj%}
+        <div class="table-wrapper-scroll-y custom-scrollbar" style="width: 100%; padding: 10px 10px">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Loại sản phẩm</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Đơn giá</th>
+                        <th scope="col">Tổng số tiền</th>
+                        <th scope="col">Ngày mua</th>
+                        <th scope="col">Xem chi tiết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for item in page_obj%}
+                    <tr>
+                        <th scope="row">{{item.id}}</th>
+                        <td>{{item.name}}</td>
+                        <td>{{item.amount}}</td>
+                        <td>{{item.price}} VND</td>
+                        <td>{{item.cost}} VND</td>
+                        <td>{{item.pub_date}}</td>
+                        <td>
+                            <a href="/buy_item?id={{item.id}}">Xem</a>
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+
+        {%else%}
+        <div class="card" style="width: 100%; margin-bottom: 10px">
+            <div class="h3 card-header">Không có data.</div>
+        </div>
+        {%endif%}
+    </div>
+</section>
+<section>
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+            Page {{ page_obj.previous_page_number }}
+          </a>
+                </li>
+                {% endif %}
+
+                <li class="page-item">
+                    <a class="page-link">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </a>
+                </li>
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+            Page {{ page_obj.next_page_number }}
+          </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
+            Last
+          </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</section>
+{%endblock%}

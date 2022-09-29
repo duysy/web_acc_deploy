@@ -1,0 +1,41 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    container_name: postgres-django
+    environment:
+      - POSTGRES_NAME=django
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=django
+    restart: always
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+
+  web:
+    build: .
+    container_name: web-django
+    command: gunicorn webacc.wsgi:application --bind 0.0.0.0:8000 --workers=2 --reload
+    volumes:
+      # - ./webacc:/code
+      - ./product:/code
+      - ./data/web_static:/code/static
+    tty: true
+    restart: always
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:1.19.0-alpine
+    container_name: nginx-django
+    ports:
+      - 80:80
+    volumes:
+      - ./data/nginx:/etc/nginx/conf.d
+      - ./data/web_static:/static
+    restart: always
+    depends_on:
+      - web
+
+# docker-compose run web python manage.py migrate
+# docker-compose run web python manage.py createsuperuser 
+# docker exec -it b4f5571e9658 bash
