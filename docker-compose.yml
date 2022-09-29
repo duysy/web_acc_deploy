@@ -16,8 +16,8 @@ services:
     container_name: web-django
     command: gunicorn webacc.wsgi:application --bind 0.0.0.0:8000 --workers=2 --reload
     volumes:
-      - ./webacc:/code
-      # - ./product:/code
+      # - ./webacc:/code
+      - ./product:/code
       - ./data/web_static:/code/static
     tty: true
     restart: always
