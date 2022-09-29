@@ -38,4 +38,6 @@ services:
 
 # docker-compose run web python manage.py migrate
 # docker-compose run web python manage.py createsuperuser 
+# docker-compose run web python manage.py collectstatic
+
 # docker exec -it b4f5571e9658 bash
