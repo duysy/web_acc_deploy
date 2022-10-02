@@ -16,6 +16,7 @@
             {%if kindCategorys%} {%for item in kindCategorys%}
             <li class="list-group-item">
                 <b>{{item.name|upper}}:</b>
+                <br>
                 <b>GET</b>
                 <i>{{base_domain}}/buyitemapi?key={{user.key_api}}&id={{item.id}}&number=NUMBER</i>
             </li>
@@ -35,16 +36,17 @@
             {%if kindCategorys%} {%for item in kindCategorys%}
             <li class="list-group-item">
                 <b>{{item.name|upper}}:</b>
+                <br>
                 <b>POST</b>
                 <pre>
-          curl --location --request POST '{{base_domain}}/additemapi' \
-          --header 'Content-Type: application/json' \
-          --data-raw '{
-              "key": "{{user.key_api}}",
-              "id": "{{item.id}}",
-              "value": "VALUE"
-          }'
-        </pre>
+                curl --location --request POST '{{base_domain}}/additemapi' \
+                --header 'Content-Type: application/json' \
+                --data-raw '{
+                    "key": "{{user.key_api}}",
+                    "id": "{{item.id}}",
+                    "value": "VALUE"
+                }'
+                </pre>
             </li>
             {%endfor%} {%else%}
             <div class="card" style="width: 100%; margin-bottom: 50px">
