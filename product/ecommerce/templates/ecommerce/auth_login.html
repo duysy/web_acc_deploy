@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -27,13 +28,13 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-image: url(https://khoinguonsangtao.vn/wp-content/uploads/2021/12/hinh-nen-may-tinh.jpg);
+      background-image: url({%static 'background/background.jpg' %});
       opacity: 0.85;
     "
   >
     <form action="/login" method="post" class="form" style="width: 350px">
       {% csrf_token %}
-      <h1 class="text-danger" style="font-size: 5rem">{{logo_text}}</h1>
+      <h1 class="text-danger" style="font-size: 5rem">{{inforConfig.logo_text}}</h1>
       <h1 class="h2 mb-3 font-weight">Đăng nhập vào tài khoản</h1>
       <div class="form-group">
         <label class="sr-only">Username</label>

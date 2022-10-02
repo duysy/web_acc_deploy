@@ -3,8 +3,16 @@
 <section>
     <div class="card" style="width: 100%; margin-bottom: 50px">
         <div class="h3 card-header">API MUA</div>
+
         <ul class="list-group">
-            <li class="list-group-item"><b>KEY : </b>{{user.key_api}}</li>
+            <li class="list-group-item">
+                <b>KEY : </b>
+                <b>{{user.key_api}}</b>
+                <form action="/api" method="post" style="display: inline-block; margin: 0 20px;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary btn-sm">Change Key</button>
+                </form>
+            </li>
             {%if kindCategorys%} {%for item in kindCategorys%}
             <li class="list-group-item">
                 <b>{{item.name|upper}}:</b>
