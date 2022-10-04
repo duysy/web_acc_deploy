@@ -1,45 +1,58 @@
 {%extends 'ecommerce/user_template.html'%} {%block content%}
+<style>
+    .custom-scrollbar {
+        position: relative;
+        overflow: auto;
+    }
+    
+    .table-wrapper-scroll-y {
+        display: block;
+    }
+</style>
+
 <title>Thông tin nạp tiền</title>
 <section>
-  {%if data%}
-  <div class="card" style="width: 100%; margin-bottom: 50px">
-    <div class="h3 card-header">THÔNG TIN NẠP TIỀN</div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Bank</th>
-          <th scope="col">Card number</th>
-          <th scope="col">Account</th>
-          <th scope="col">Content</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%for item in data%}
-        <tr>
-          <td>{{item.bank}}</td>
-          <td>{{item.card_number}}</td>
-          <td>{{item.account_name}}</td>
-          <td>naptien_{{userId}}</td>
-        </tr>
-        {%endfor%}
-      </tbody>
-    </table>
-  </div>
-  {%else%}
-  <div class="card" style="width: 100%; margin-bottom: 50px">
-    <div class="h3 card-header">Không có data.</div>
-  </div>
-  {%endif%}
+    {%if data%}
+    <div class="card" style="width: 100%; margin-bottom: 50px">
+        <div class="h3 card-header">THÔNG TIN NẠP TIỀN</div>
+        <div class="table-wrapper-scroll-y custom-scrollbar" style="width: 100%; padding: 10px 10px">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Bank</th>
+                        <th scope="col">Card number</th>
+                        <th scope="col">Account</th>
+                        <th scope="col">Content</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for item in data%}
+                    <tr>
+                        <td>{{item.bank}}</td>
+                        <td>{{item.card_number}}</td>
+                        <td>{{item.account_name}}</td>
+                        <td>naptien_{{userId}}</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {%else%}
+    <div class="card" style="width: 100%; margin-bottom: 50px">
+        <div class="h3 card-header">Không có data.</div>
+    </div>
+    {%endif%}
 </section>
 <hr />
 <section>
-  <div class="jumbotron">
-    <h1 class="display-5">Lưu ý :</h1>
-    <p class="lead">
-      <p class="lead">
-        {%if inforConfig.home_list_account_info%} {{inforConfig.deposit_note|safe}} {%else%} Deposit note {%endif%}
-    </p>
-    </p>
-  </div>
+    <div class="jumbotron">
+        <h1 class="display-5">Lưu ý :</h1>
+        <p class="lead">
+            <p class="lead">
+                {%if inforConfig.home_list_account_info%} {{inforConfig.deposit_note|safe}} {%else%} Deposit note {%endif%}
+            </p>
+        </p>
+    </div>
 </section>
 {%endblock%}
